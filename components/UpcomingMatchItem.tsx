@@ -16,12 +16,24 @@ const formatDisplayDate = (dateString: string): string => {
     });
 };
 
-const formatDisplayTime = (timeString: string): string => {
-    if (!timeString) return '';
+const formatDisplayTime = (timeString: string): React.ReactNode => {
+    if (!timeString) return null;
     // API time can include seconds, so split and take first two parts
     const [hours, minutes] = timeString.split(':');
-    return `${hours}:${minutes}`;
-}
+    let h = parseInt(hours, 10);
+    const period = h >= 12 ? 'PM' : 'AM';
+    h = h % 12;
+    h = h ? h : 12; // the hour '0' should be '12'
+    const time = `${h}:${minutes}`;
+
+    return (
+        <>
+            <p className="font-bold text-lg leading-tight">{time}</p>
+            <p className="text-xs text-gray-500 uppercase -mt-1">{period}</p>
+        </>
+    );
+};
+
 
 const UpcomingMatchItem: React.FC<UpcomingMatchItemProps> = ({ match, onNavigate }) => {
     const isFinished = match.strStatus === 'Match Finished';
@@ -36,7 +48,7 @@ const UpcomingMatchItem: React.FC<UpcomingMatchItemProps> = ({ match, onNavigate
                     {isFinished ? (
                         <p className="font-bold text-lg">{match.intHomeScore} : {match.intAwayScore}</p>
                     ) : (
-                        <p className="font-bold text-lg">{formatDisplayTime(match.strTime)}</p>
+                        formatDisplayTime(match.strTime)
                     )}
                     <p className="text-xs text-gray-500">{formatDisplayDate(match.dateEvent)}</p>
                 </div>
