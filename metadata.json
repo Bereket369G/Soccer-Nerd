@@ -1,0 +1,5 @@
+{
+  "name": "Soccer Nerds",
+  "description": "A user-friendly web app for football enthusiasts to track live and upcoming matches, with options to filter by date and search by team name. Each match listing displays teams, time, and score in a clean, intuitive layout.",
+  "requestFramePermissions": []
+}
