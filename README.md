@@ -24,14 +24,15 @@ This project is built with a modern frontend stack, ensuring a performant and ma
 
 - **Framework**: [React](https://reactjs.org/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) (via CDN)
+- **Build Tool**: [Vite](https://vitejs.dev/)
 - **Data Source**: [TheSportsDB API](https://www.thesportsdb.com/api.php)
 
 ---
 
 ## 🚀 Getting Started
 
-Follow these instructions to get a local copy up and running for development and testing purposes.
+This project is set up using [Vite](https://vitejs.dev/) for a fast and modern development experience. Follow these instructions to get a local copy up and running.
 
 ### Prerequisites
 
@@ -39,20 +40,14 @@ You need to have [Node.js](https://nodejs.org/en/) (v16 or later) and a package 
 
 ### Installation & Setup
 
-1.  **Clone the Repository**
+1.  **Clone the Repository** (If you haven't already)
+    Open your terminal and clone the project files to your local machine.
     ```sh
     git clone https://github.com/your-username/soccer-nerds.git
     cd soccer-nerds
     ```
 
-2.  **Install Dependencies**
-    ```sh
-    npm install
-    # or
-    yarn install
-    ```
-
-3.  **Set Up TheSportsDB API Key**
+2.  **Set Up TheSportsDB API Key**
     This application requires an API key from TheSportsDB to fetch match data.
 
     - Visit [TheSportsDB API](https://www.thesportsdb.com/api.php) and get your free API key.
@@ -63,27 +58,27 @@ You need to have [Node.js](https://nodejs.org/en/) (v16 or later) and a package 
     // lib/api.ts
 
     const API_KEY = 'YOUR_API_KEY_HERE'; // Replace '123' with your key
-    const BASE_URL = `https://www.thesportsdb.com/api/v1/json/${API_KEY}`;
+    ```
 
-    // ... rest of the file
+3.  **Install Dependencies**
+    This will install React, Vite, and all other necessary packages defined in `package.json`.
+    ```sh
+    npm install
     ```
 
 ### Running the Application
 
 1.  **Start the Development Server**
-    This command will start the application in development mode and open it in your default browser. The server supports hot-reloading.
+    This command will start the application in development mode.
     ```sh
     npm run dev
-    # or
-    yarn dev
     ```
+    Open your browser and navigate to the local URL provided in your terminal (e.g., `http://localhost:5173`). The server supports hot-reloading, so changes you make to the code will be reflected instantly.
 
 2.  **Build for Production**
     To create an optimized production build of the app, run:
     ```sh
     npm run build
-    # or
-    yarn build
     ```
     This will generate a `dist` folder with all the static assets ready for deployment.
 
@@ -98,7 +93,10 @@ The codebase is organized to be clean and scalable:
 ├── /lib             # API logic and other utility functions
 ├── /types           # TypeScript type definitions
 ├── App.tsx          # Main application component
-└── index.tsx        # Entry point for the React application
+├── index.html       # HTML entry point
+├── index.tsx        # Entry point for the React application
+├── package.json     # Project dependencies and scripts
+└── vite.config.ts   # Vite configuration
 ```
 
 ---
