@@ -6,6 +6,8 @@ import UpcomingMatches from './components/UpcomingMatches';
 import Footer from './components/Footer';
 import MatchDetailsPage from './components/MatchDetailsPage';
 import ProfilePage from './components/ProfilePage';
+import LoadingPage from './components/LoadingPage';
+import OnboardingFlow, { UserOnboardingData } from './components/OnboardingFlow';
 import { fetchMatchesByDate } from './lib/api';
 import type { Match } from './types';
 
@@ -13,6 +15,10 @@ import type { Match } from './types';
 const getTodaysDate = () => new Date().toISOString().split('T')[0];
 
 const App: React.FC = () => {
+  // App state management
+  const [appState, setAppState] = useState<'loading' | 'onboarding' | 'main'>('loading');
+  const [userOnboardingData, setUserOnboardingData] = useState<UserOnboardingData | null>(null);
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [matchStatus, setMatchStatus] = useState('all'); // 'all', 'live', 'upcoming', 'finished'
   const [selectedDate, setSelectedDate] = useState<string>(getTodaysDate());
@@ -23,6 +29,25 @@ const App: React.FC = () => {
 
   const [selectedMatchId, setSelectedMatchId] = useState<string | null>(null);
   const [currentView, setCurrentView] = useState<'home' | 'profile'>('home');
+
+
+
+  const handleLoadingComplete = () => {
+    // Check if user needs onboarding
+    const savedUserData = localStorage.getItem('soccerNerdsUserData');
+    if (savedUserData) {
+      setUserOnboardingData(JSON.parse(savedUserData));
+      setAppState('main');
+    } else {
+      setAppState('onboarding');
+    }
+  };
+
+  const handleOnboardingComplete = (userData: UserOnboardingData) => {
+    setUserOnboardingData(userData);
+    localStorage.setItem('soccerNerdsUserData', JSON.stringify(userData));
+    setAppState('main');
+  };
 
   useEffect(() => {
     const loadMatches = async () => {
@@ -124,9 +149,18 @@ const App: React.FC = () => {
     </>
   );
 
+  // Handle different app states
+  if (appState === 'loading') {
+    return <LoadingPage onComplete={handleLoadingComplete} />;
+  }
+
+  if (appState === 'onboarding') {
+    return <OnboardingFlow onComplete={handleOnboardingComplete} />;
+  }
+
   return (
     <div className="container mx-auto max-w-sm bg-[#F8FAFC] min-h-screen">
-      {currentView === 'home' ? renderHomePage() : <ProfilePage />}
+      {currentView === 'home' ? renderHomePage() : <ProfilePage userOnboardingData={userOnboardingData} />}
       <Footer 
         activeView={selectedMatchId ? 'stats' : currentView} 
         onNavigate={setCurrentView} 
